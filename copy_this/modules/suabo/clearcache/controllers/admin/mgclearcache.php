@@ -5,6 +5,10 @@ class mgclearcache extends oxAdminDetails {
     protected $_sClearCacheLog;    
     
     public function render() {
+      if(!oxConfig::getParameter('fnc')) {
+        $this->cleartmp();
+        $this->_sThisTemplate = "mgclearcache.tpl";
+      }      
       return parent::render();
     }
     
