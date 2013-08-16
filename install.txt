@@ -3,10 +3,10 @@ Admin Temporäre Dateien löschen Modul
 
 1. copy_this in Shop Root Verzeichnis kopieren
 
-2. change_this Templates anpassen
+2. admin/tpl/header.tpl add the block header "header_buttons" in <ul> around the <li>s
 
-3. Modul im Backend Eintragen: navigation => mgtools/admin_cleartmp
+3. Modul im Backend aktivieren
 
-4. Tmp/Chache leeren
+4. Tmp/Chache letztes mal von Hand leeren
 
 Fertig
