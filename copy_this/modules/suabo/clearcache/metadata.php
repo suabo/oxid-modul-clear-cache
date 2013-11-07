@@ -19,6 +19,7 @@ $aModule = array(
     'author'      => 'suabo',
     'url'         => 'http://www.suabo.de',
     'email'       => 'info@suabo.de',
+    'extend' => array( ),
     'files' => array(
         'mgclearcache' => 'suabo/clearcache/controllers/admin/mgclearcache.php',
     ),
