@@ -16,6 +16,7 @@ $aLang = array(
       Um den Button anzuzeigen muss der Smarty Block im Admin Template zunächst erstellt werden. Öffnen Sie die Datei /application/views/admin/tpl/header.tpl und fügen 
       folgenden Codeblock um die vorhandenen Buttons ein',
     'SUABOCLEARCACHE_TIPP_TEXT2'          => 'Das Ergebnis ihrer Anpassung sollte ungefähr so aussehen',
+    'SUABOCLEARCACHE_TIPP_TEXT3'          => 'Wenn Sie keine Anpassungen an den Admin Templates durchgeführt haben können Sie auch einfach den Inhalt des Ordners change_this in ihr Shop root Verzeichnis kopieren um den Fehlenden Templateblock einzufügen.',
 );
 
 /*

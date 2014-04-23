@@ -49,6 +49,8 @@
         <<!-- -->/ul><br>
         ...  
       </code>
+      <br>
+      [{ oxmultilang ident="SUABOCLEARCACHE_TIPP_TEXT3" }]
     </div>
   </div>
 </div>
