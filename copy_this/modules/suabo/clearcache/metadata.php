@@ -15,10 +15,11 @@ $aModule = array(
       'en' => 'Clear Shopcache in admin backend.'
     ),
     'thumbnail'   => '../logo.png',
-    'version'     => '1.1.5',
+    'version'     => '1.1.6',
     'author'      => 'suabo',
     'url'         => 'http://www.suabo.de',
     'email'       => 'info@suabo.de',
+    'extend' => array(),
     'files' => array(
         'mgclearcache' => 'suabo/clearcache/controllers/admin/mgclearcache.php',
     ),
