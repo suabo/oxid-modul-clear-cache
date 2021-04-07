@@ -5,8 +5,8 @@
         <b style="float:left;">[{ oxmultilang ident="SUABOCLEARCACHE_BUTTON" }]</b>
         <img id="suaboclearcache-preloader" src="[{$oViewConf->getModuleUrl('suaboclearcache', 'out/src/img/preloader.gif')}]" alt="loading" style="display:none;float:right;margin-right:10px;">
     </a>
-    <a href="[{$oViewConf->getSelfLink()|cat:'cl=mgclearcache'}]" target="basefrm" style="float:right;">
-        <img src="[{$oViewConf->getModuleUrl('suaboclearcache', 'out/src/img/settings.svg')}]" alt="[{ oxmultilang ident="SUABOCLEARCACHE_SETTINGS_ALT_TEXT" }]" width="15px" height="15px" style="margin-top:2px;">
+    <a href="[{$oViewConf->getSelfLink()|cat:'cl=suaboclearcache'}]" target="basefrm" style="float:right;">
+        <img src="[{$oViewConf->getModuleUrl('suaboclearcache', 'out/src/img/settings.svg')}]" alt="[{oxmultilang ident="SUABOCLEARCACHE_SETTINGS_ALT_TEXT"}]" width="15px" height="15px" style="margin-top:2px;">
     </a>
 
     <script>
@@ -33,7 +33,7 @@
             pe.style.opacity = 1.0;
             pe.style.display = 'block';
             //ajax
-            var url = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"|cat:"&cl=mgclearcache&fnc=ajaxClearCache"}]";
+            var url = "[{$oViewConf->getSelfLink()|replace:"&amp;":"&"|cat:"&cl=suaboclearcache&fnc=ajaxClearCache"}]";
             if (window.XMLHttpRequest) {
                 // AJAX nutzen mit IE7+, Chrome, Firefox, Safari, Opera
                 xmlhttp = new XMLHttpRequest();

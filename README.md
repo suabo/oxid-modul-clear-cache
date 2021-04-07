@@ -1,41 +1,16 @@
-Clear Cache
-===============
+Clear Cache - OXID eShop Module
+--
 
-Mit dem Clear Cache Modul können Sie Cache und Debug Informationen aus dem Backend einsehen und den Cache leeren.
-Außrdem wird geprüft ob eine .htaccess Datei im Cache Verzeichnis vorhanden ist und erstellt, falls benötigt.
+Have an eye on your shops cache and debug information. Clear your shop cache fully or just partially.
+Check for .htaccess file and create it if needed.
 
-Sehen sie außerdem die letzten 4096 Byte der OXID & PHP Fehler Log in der Übersicht von Clear Cache.
-So kommen Sie Fehlern in Zukunft schneller auf die Spur.
+Setup the path for your php error log file to see the last error in the OXID eShop backend.
 
-![Clear Cache Backend View](clearcache-be-view.png)
+## Installation
 
-## Installation ## 
+### 1. Install module via composer
+`composer require suabo/clearcache`
 
-Deutsch:
-1. copy_this in Shop Root Verzeichnis kopieren
-2. Modul im Backend aktivieren
-3. Tmp/Chache letztes mal von Hand leeren
+### 2. Activate module in shop backend
 
-English:
-1. copy_this into shop root folder
-2. activate module in oxid backend
-3. clear tmp/ last time manually
-
-## Clear Cache Button in Admin Headbar (optional) ##
-
-Deutsch:
-Sie können mit einer einfachen Anpassung an einem Admin Template den Button über 
-ein bereits begefügtes Block Template in die Obere Frame im Admin einfügen.
-Fügen Sie hierzu den Block `header_buttons` im Admin Template `application/views/admin/tpl/header.tpl` ein:
-
-English:
-Setup a Button in the upper frame of the backend by inserting the smarty block `header_buttons` 
-into the admin template `application/views/admin/tpl/header.tpl`:
-
-    <ul>
-    [{block name="header_buttons"}]
-    ...
-    <li>...</li>
-    ..
-    [{/block}]
-    </ul>
+### 2.1 (optional) Setup php error log path in module settings

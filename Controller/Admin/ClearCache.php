@@ -1,30 +1,50 @@
 <?php
-class mgclearcache extends oxAdminDetails {
-    
+
+namespace Suabo\ClearCache\Controller\Admin;
+
+use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
+use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsView;
+
+/**
+ * Class ClearCache
+ */
+class ClearCache extends AdminDetailsController {
+
+    /**
+     * Template
+     * @var string
+     */
     protected $_sThisTemplate = "suaboclearcache.tpl";
 
-    /*
-     * deprecated:cache clear log array
-     */
-    protected $_aClearCacheLog = null;
-
-    /*
-     * cache object
+    /**
+     * Clear cache object
+     * @var null|\stdClass
      */
     protected $_oClearCache = null;
 
-    /*
-     * debug object
+    /**
+     * Debug object
+     * @var null
      */
     protected $_oDebug = null;
-    
+
+    /**
+     * Render Tempalte
+     * @return string
+     */
     public function render() {
-        $this->_aViewData['aSettings'] = $this->_loadUserSettings();
+        $this->_aViewData['aSettings'] = $this->_loadSettings();
         $this->_aViewData['oClearCache'] = $this->_getCacheInfo();
         $this->_aViewData['oDebug'] = $this->_getDebugInfo();
+
         return parent::render();
     }
 
+    /**
+     * Save Settings
+     */
     public function saveSetting() {
         $aMapping = array(
             'shop'      => 'blSuaboClearCacheShop',
@@ -34,10 +54,11 @@ class mgclearcache extends oxAdminDetails {
             'menu'      => 'blSuaboClearCacheMenu',
         );
 
-        $oConfig = $this->getConfig();
-        $sName = $oConfig->getRequestParameter('name');
-        $sValue = $oConfig->getRequestParameter('value');
-        $iMode = $oConfig->getRequestParameter('mode');
+        $oConfig = Registry::getConfig();
+        $oRequest = Registry::getRequest();
+        $sName = $oRequest->getRequestParameter('name');
+        $sValue = $oRequest->getRequestParameter('value');
+        $iMode = $oRequest->getRequestParameter('mode');
         $oConfig->saveShopConfVar('bool', $aMapping[$sName], $sValue, $oConfig->getShopId(), 'module:suaboclearcache');
         $oConfig->saveShopConfVar('bool', 'blSuaboClearCacheMode', $iMode, $oConfig->getShopId(), 'module:suaboclearcache');
 
@@ -47,10 +68,11 @@ class mgclearcache extends oxAdminDetails {
         exit(1);
     }
 
-    /*
-     * load user saved settings
+    /**
+     * Load settings
+     * @return array
      */
-    protected function _loadUserSettings() {
+    protected function _loadSettings() {
         $aUserSettings = array();
         $oConfig = $this->getConfig();
         $aUserSettings['mode'] = $oConfig->getConfigParam('blSuaboClearCacheMode');
@@ -62,13 +84,14 @@ class mgclearcache extends oxAdminDetails {
         return $aUserSettings;
     }
 
-    /*
+    /**
      * get debug infos
+     * @return null|\stdClass
      */
     protected function _getDebugInfo() {
         $oConfig = $this->getConfig();
         if($this->_oDebug === null) {
-            $this->_oDebug = new stdClass();
+            $this->_oDebug = new \stdClass();
         }
 
         // check php error log
@@ -96,53 +119,58 @@ class mgclearcache extends oxAdminDetails {
             $fh = fopen($sPHPErrorLogPath, 'r');
             fseek($fh, filesize($sPHPErrorLogPath) - 4096);
             $this->_oDebug->sPHPErrorLogTail = fread($fh, 4096);
-            $this->_oDebug->sPHPErrorLogTail = substr($this->_oDebug->sPHPErrorLogTail, strpos($this->_oDebug->sPHPErrorLogTail, '----'));
+            $this->_oDebug->sPHPErrorLogTail = substr($this->_oDebug->sPHPErrorLogTail, strpos($this->_oDebug->sPHPErrorLogTail, "\n"));
             fclose($fh);
         }
 
         // check exception log
-        $sLogPath = $oConfig->getConfigParam('sShopDir')."log/EXCEPTION_LOG.txt";
+        $sLogPath = $oConfig->getConfigParam('sShopDir')."log/oxideshop.log";
         if(file_exists($sLogPath)) {
             $this->_oDebug->sShopLogPath = $sLogPath;
             $this->_oDebug->sShopLogFileSize = $this->_getFileSize($sLogPath);
         } else {
-            $this->_oDebug->sShopLogPath = "EXCEPTION_LOG.txt wurde nicht gefunden!";
+            $this->_oDebug->sShopLogPath = "oxideshop.log wurde nicht gefunden!";
         }
 
         // get tail of exception log
         $fh = fopen($sLogPath, 'r');
         fseek($fh, filesize($sLogPath) - 4096);
         $this->_oDebug->sExceptionLogTail = fread($fh, 4096);
-        $this->_oDebug->sExceptionLogTail = substr($this->_oDebug->sExceptionLogTail, strpos($this->_oDebug->sExceptionLogTail, '----'));
+        $this->_oDebug->sExceptionLogTail = substr($this->_oDebug->sExceptionLogTail, strpos($this->_oDebug->sExceptionLogTail, "\n"));
         fclose($fh);
         return $this->_oDebug;
     }
 
-    /*
-     * get file size of file via path
+    /**
+     * Get file size of file via path
+     * @param $sFilename
+     * @return mixed
      */
     protected function _getFileSize($sFilename) {
         $iBytes = filesize($sFilename);
         return $this->_formatHumanFileSize($iBytes);
     }
 
-    /*
-     * format file size into human readable format
+    /**
+     * Format file size into human readable format
+     * @param $iBytes
+     * @return mixed
      */
     protected function _formatHumanFileSize($iBytes) {
         $sz = 'BKMGTP';
         $factor = floor((strlen($iBytes) - 1) / 3);
-        return str_replace(array('B', 'K', 'M', 'G', 'T', 'P'), array('Byte', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb'), sprintf("%.2f", $iBytes / pow(1024, $factor)).' '.@$sz[$factor]);
+        return str_replace(array('B', 'K', 'M', 'G', 'T', 'P'), array('Byte', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb'), sprintf("%.2f", $iBytes / pow(1024, $factor)).' '.@$sz[intval($factor)]);
     }
 
-    /*
-     * get cache infos
+    /**
+     * get cache information
+     * @return null|\stdClass
      */
     protected function _getCacheInfo() {
-        $oConfig = $this->getConfig();
+        $oConfig = Registry::getConfig();
         // init response object
         if($this->_oClearCache === null) {
-            $this->_oClearCache = new stdClass();
+            $this->_oClearCache = new \stdClass();
         }
 
         // get shop cache dir
@@ -163,25 +191,25 @@ class mgclearcache extends oxAdminDetails {
         // get cache dir
         $this->_oClearCache->sCachePath = $oConfig->getConfigParam('sCompileDir');
         // get smarty dir
-        $this->_oClearCache->sSmartyCachePath = oxRegistry::get('oxUtilsView')->getSmartyDir();
+        $this->_oClearCache->sSmartyCachePath = Registry::get(UtilsView::class)->getSmartyDir();
 
         return $this->_oClearCache;
     }
 
-    /*
-     * clear cache as user selected
+    /**
+     * Clear cache as user selected
      */
     public function clearCache() {
         if($this->_oClearCache === null) {
-            $this->_oClearCache = new stdClass();
+            $this->_oClearCache = new \stdClass();
         }
 
-        $oConfig = $this->getConfig();
-        $oUtils = oxRegistry::getUtils();
-        $aClearCache = $oConfig->getRequestParameter('clearcache');
+        $oRequest = Registry::getRequest();
+        $oUtils = Registry::getUtils();
+        $aClearCache = $oRequest->getRequestParameter('clearcache');
         if(empty($aClearCache) || !is_array($aClearCache)) {
             // load saved vars to perform cache clear if we got no post settings
-            $aClearCache = $this->_loadUserSettings();
+            $aClearCache = $this->_loadSettings();
         }
         $this->_oClearCache->aSettings = array();
 
@@ -239,27 +267,25 @@ class mgclearcache extends oxAdminDetails {
         }
     }
 
-    /*
-     * clear template cache
+    /**
+     * Clear template cache
      */
     protected function _resetTemplateCache() {
         // get all template cache files
-        $aTplCacheFiles = glob(oxRegistry::get('oxUtilsView')->getSmartyDir().'/*');
+        $aTplCacheFiles = glob(Registry::get(UtilsView::class)->getSmartyDir().'/*');
         foreach($aTplCacheFiles as $sFile) {
             // remove cache file if no folder
-            if(!is_dir($sFile) && !@unlink($sFile)) {
-                // append file to log array
-                $this->_aClearCacheLog[] = $sFile;
+            if(!is_dir($sFile)) {
+                @unlink($sFile);
             }
         }
     }
 
-    /*
-     * clear persistent shop cache
+    /**
+     * Clear persistent shop cache
      */
     protected function _resetPersistentCache() {
-        $oConfig = $this->getConfig();
-        $oUtils = oxRegistry::getUtils();
+        $oUtils = Registry::getUtils();
         $sCacheDir = $oUtils->getCacheFilePath(null, true);
         $aDir = glob($sCacheDir.'*');
         if(is_array($aDir)) {
@@ -272,13 +298,14 @@ class mgclearcache extends oxAdminDetails {
         }
     }
 
-    /*
-     * prepare array with all cache files
+    /**
+     * Prepare array with all cache files
+     * @return array
      */
     protected function _getAllCacheFiles() {
         $oConfig = $this->getConfig();
         if($this->_oClearCache === null) {
-            $this->_oClearCache = new stdClass();
+            $this->_oClearCache = new \stdClass();
         }
 
         // get shop cache dir
@@ -293,7 +320,7 @@ class mgclearcache extends oxAdminDetails {
                 $aSubDir = glob($sData.'/*');
                 $aCache = array_merge($aCache, $aSubDir);
 
-                if(str_replace('//', '/', $sData.'/') == str_replace('//', '/', oxRegistry::get('oxUtilsView')->getSmartyDir())) {
+                if(str_replace('//', '/', $sData.'/') == str_replace('//', '/', Registry::get(UtilsView::class)->getSmartyDir())) {
                     $this->_oClearCache->iSmartyCacheFileCnt = count($aSubDir);
                     // get file size of smarty cache files
                     $sDuRes = exec('du -S --max-depth=1 ' . $sData.'/');
@@ -316,29 +343,28 @@ class mgclearcache extends oxAdminDetails {
         return $aCache;
     }
 
-    /*
-     * copy .htaccess file from config/.htaccess.tmp to cache folder
+    /**
+     * Copy .htaccess file from config/.htaccess.tmp to cache folder
      */
     public function createHtaccessFile() {
-        $oModule = oxNew('oxModule');
+        $oModule = oxNew(Module::class);
         $oConfig = $this->getConfig();
         // get modules path
         $sModulesDir = $oConfig->getModulesDir();
         // get cache path
         $sCacheDir = $oConfig->getConfigParam('sCompileDir');
         // check if the default .htaccess file is in config folder
-        if(file_exists($sModulesDir.$oModule->getModulePath('suaboclearcache').'/config/.htaccess.tmp')) {
+        if(file_exists($sModulesDir.$oModule->getModulePath('suaboclearcache').'/Config/.htaccess.tmp')) {
             // copy .htaccess to cache folder
-            copy($sModulesDir . $oModule->getModulePath('suaboclearcache') . '/config/.htaccess.tmp', $sCacheDir . '/.htaccess');
+            copy($sModulesDir . $oModule->getModulePath('suaboclearcache') . '/Config/.htaccess.tmp', $sCacheDir . '/.htaccess');
         }
     }
 
-    /*
-     * Called via Ajax
+    /**
+     * Clear cache - ajax call
      */
     public function ajaxClearCache() {
         $this->clearCache();
         $this->_sThisTemplate = "suaboclearcache_popup.tpl";
     }
 }
-?>

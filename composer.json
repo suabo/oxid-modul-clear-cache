@@ -1,0 +1,27 @@
+{
+  "name": "suabo/clearcache",
+  "description": "Get cache informations and clear shop cache from within admin backend.",
+  "type": "oxideshop-module",
+  "keywords": ["oxid", "modules", "eShop"],
+  "homepage": "https://www.suabo.de",
+  "version": "3.0.0",
+  "license": [
+    "MIT"
+  ],
+  "extra": {
+    "oxideshop": {
+      "blacklist-filter": [
+        "documentation/**/*.*"
+      ],
+      "target-directory": "suabo/clearcache"
+    }
+  },
+  "require": {
+    "php": ">=5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Suabo\\ClearCache\\": "../../../source/modules/suabo/clearcache"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 <div id="clearcachepopup" class="clearcachepopup">
-    <style>
+    <style scoped="scoped">
         .clearcachepopup {
             position: absolute;
             top: 100px;
@@ -16,7 +16,7 @@
 
         .clearcachepopup h1 {
             font-size: 18px;
-            font-family: Verdana;
+            font-family: Verdana, sans-serif;
             color: #fff;
             border-bottom: 1px solid #ccc;
             padding: 10px;
@@ -29,12 +29,6 @@
             color: lightgreen;
             font-weight: bold;
             padding-right: 10px;
-        }
-
-        .clearcachepopup .details {
-            height: 50px;
-            width: 400px;
-            overflow-y: auto;
         }
     </style>
 

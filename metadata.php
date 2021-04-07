@@ -2,7 +2,7 @@
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.1';
+$sMetadataVersion = '2.0';
 
 /**
  * Module information
@@ -15,21 +15,20 @@ $aModule = array(
       'en' => 'Get cache informations and clear shop cache from within admin backend.'
     ),
     'thumbnail'   => '../logo.png',
-    'version'     => '2.0.0',
+    'version'     => '3.0.0',
     'author'      => 'suabo',
     'url'         => 'http://www.suabo.de',
     'email'       => 'info@suabo.de',
     'extend' => array(),
-    'files' => array(
-        'mgclearcache' => 'suabo/clearcache/controllers/admin/mgclearcache.php',
+    'controllers' => array(
+        'suaboclearcache' => Suabo\ClearCache\Controller\Admin\ClearCache::class,
     ),
     'blocks' => array(
-        array('template' => 'header.tpl', 'block' => 'header_buttons', 'file' => 'views/blocks/mgclearcachebutton.tpl'),
+        array('template' => 'header.tpl', 'block' => 'admin_header_links', 'file' => 'views/blocks/mgclearcachebutton.tpl'),
     ),
     'templates' => array(
         'suaboclearcache_popup.tpl' => 'suabo/clearcache/views/admin/tpl/suaboclearcache_popup.tpl',
         'suaboclearcache.tpl' => 'suabo/clearcache/views/admin/tpl/suaboclearcache.tpl',
-        'suabo/clearcache_dev_hint.tpl' => 'suabo/clearcache/views/admin/tpl/clearcache_dev_hint.tpl',
     ),
     'settings' => array(
         array('group' => 'SUABOCLEARCACHE_main', 'name' => 'blSuaboClearCacheMode', 'type' => 'select', 'value' => '0', 'constraints' => '0|1', 'position' => 0),
