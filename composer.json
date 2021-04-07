@@ -4,7 +4,6 @@
   "type": "oxideshop-module",
   "keywords": ["oxid", "modules", "eShop"],
   "homepage": "https://www.suabo.de",
-  "version": "3.0.0",
   "license": [
     "MIT"
   ],
@@ -21,7 +20,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Suabo\\ClearCache\\": "../../../source/modules/suabo/clearcache"
+      "Suabo\\ClearCache\\": ""
     }
   }
 }
