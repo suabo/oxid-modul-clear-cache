@@ -14,4 +14,4 @@ Setup the path for your php error log file to see the last error in the OXID eSh
 
 2. Activate module in shop backend
 
-2.1 (optional) Setup php error log path in module settings
+3. (optional) Setup php error log path in module settings
