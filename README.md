@@ -8,9 +8,10 @@ Setup the path for your php error log file to see the last error in the OXID eSh
 
 ## Installation
 
-### 1. Install module via composer
-`composer require suabo/clearcache`
+1. Install module via composer
 
-### 2. Activate module in shop backend
+    `composer require suabo/clearcache`
 
-### 2.1 (optional) Setup php error log path in module settings
+2. Activate module in shop backend
+
+2.1 (optional) Setup php error log path in module settings
