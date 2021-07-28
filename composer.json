@@ -1,5 +1,5 @@
 {
-  "name": "suabo/clearcache",
+  "name": "suabo/oxid-clearcache",
   "description": "Get cache informations and clear shop cache from within admin backend.",
   "type": "oxideshop-module",
   "keywords": ["oxid", "modules", "eShop"],

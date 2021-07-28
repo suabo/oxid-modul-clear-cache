@@ -14,9 +14,9 @@ $aModule = array(
       'de' => 'Stellt verschiedene Shop Cache Informationen bereit und bietet die möglichkeit diesen aus dem Backend zu leeren.',
       'en' => 'Get cache informations and clear shop cache from within admin backend.'
     ),
-    'thumbnail'   => '../logo.png',
-    'version'     => '3.0.0',
-    'author'      => 'suabo',
+    'thumbnail'   => './logo.png',
+    'version'     => '3.0.1',
+    'author'      => 'Marcel Grolms',
     'url'         => 'http://www.suabo.de',
     'email'       => 'info@suabo.de',
     'extend' => array(),
@@ -24,7 +24,7 @@ $aModule = array(
         'suaboclearcache' => Suabo\ClearCache\Controller\Admin\ClearCache::class,
     ),
     'blocks' => array(
-        array('template' => 'header.tpl', 'block' => 'admin_header_links', 'file' => 'views/blocks/mgclearcachebutton.tpl'),
+        array('template' => 'header.tpl', 'block' => 'admin_header_links', 'file' => 'views/blocks/suaboclearcachebutton.tpl'),
     ),
     'templates' => array(
         'suaboclearcache_popup.tpl' => 'suabo/clearcache/views/admin/tpl/suaboclearcache_popup.tpl',
