@@ -200,19 +200,19 @@
                         <td>[{if $oClearCache->isHtaccess}]<span style="color:darkgreen;">[{oxmultilang ident="SUABOCLEARCACHE_YES"}]</span>[{else}]<span style="color:red;">[{oxmultilang ident="SUABOCLEARCACHE_NO"}]</span>[{/if}]</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><hr><h3>[{oxmultilang ident="SUABOCLEARCACHE_SMARTY_CACHE"}]:</h3></td>
+                        <td colspan="2"><hr><h3>[{oxmultilang ident="SUABOCLEARCACHE_TEMPLATE_CACHE"}]:</h3></td>
                     </tr>
                     <tr>
-                        <td>[{oxmultilang ident="SUABOCLEARCACHE_SMARTY_CACHE"}]:</td>
-                        <td>[{$oClearCache->sSmartyCachePath}]</td>
+                        <td>[{oxmultilang ident="SUABOCLEARCACHE_TEMPLATE_CACHE"}]:</td>
+                        <td>[{$oClearCache->templateCachePath}]</td>
                     </tr>
                     <tr>
                         <td>[{oxmultilang ident="SUABOCLEARCACHE_FILE_COUNT"}]:</td>
-                        <td class="dynamic">[{$oClearCache->iSmartyCacheFileCnt}]</td>
+                        <td class="dynamic">[{$oClearCache->templateCacheFileCnt}]</td>
                     </tr>
                     <tr>
                         <td>[{oxmultilang ident="SUABOCLEARCACHE_FILE_SIZE"}]:</td>
-                        <td class="dynamic">[{$oClearCache->iSmartyCacheFileSize}]</td>
+                        <td class="dynamic">[{$oClearCache->templateCacheFileSize}]</td>
                     </tr>
                     <tr>
                         <td colspan="2"><hr><h3>[{oxmultilang ident="SUABOCLEARCACHE_TOTAL"}]:</h3></td>

@@ -1,0 +1,79 @@
+{% extends "include/header_links.html.twig" %}
+{% block admin_header_links %}
+    {{ parent() }}
+    <li class="sep">
+        <a id="mgclearcache" class="rc" style="cursor:pointer;float:left;">
+            <b style="float:left;">{{ translate({ ident: "SUABOCLEARCACHE_BUTTON" }) }}</b>
+            <img id="suaboclearcache-preloader" src="{{ oViewConf.getModuleUrl('suaboclearcache', 'img/preloader.gif') }}" alt="loading" style="display:none;float:right;margin-right:10px;">
+        </a>
+        <a id="suaboClearCacheSettings" href="{{ oViewConf.getSelfLink()|raw }}cl=suaboclearcache" target="basefrm" style="float:right;">
+            <img src="{{ oViewConf.getModuleUrl('suaboclearcache', 'img/settings.svg') }}" alt="{{ translate({ ident: "SUABOCLEARCACHE_SETTINGS_ALT_TEXT" }) }}" width="15px" height="15px" style="margin-top:2px;">
+        </a>
+
+        <script>
+            let cctimer;
+            let ccperiod;
+            const ccAnchor = document.getElementById('mgclearcache');
+            const fade = function(element, remove) {
+                let op = 1;  // initial opacity
+                ccperiod = setInterval(function () {
+                    if (op <= 0.1) {
+                        op = 0.0;
+                        clearInterval(ccperiod);
+                        if(remove !== undefined) {
+                            element.parentNode.removeChild(element);
+                        }  else {
+                            element.style.display = 'none';
+                        }
+                    }
+                    element.style.opacity = op;
+                    element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+                    op -= 0.1;
+                }, 50);
+            };
+            ccAnchor.onclick = function() {
+                // get target frame
+                let ptf;
+                if(parent.basefrm.list !== undefined && parent.basefrm.list.document !== undefined) {
+                    ptf = parent.basefrm.list.document;
+                } else {
+                    ptf = parent.basefrm.document;
+                }
+                // remove old popup if it is still there
+                const ope = ptf.getElementById('clearcachepopup');
+                if(ope !== null && ope.parentNode !== null) {
+                    ope.parentNode.removeChild(ope);
+                    clearInterval(ccperiod);
+                    clearTimeout(cctimer);
+                }
+                // get preloader image element
+                const pe = document.getElementById('suaboclearcache-preloader');
+                pe.style.opacity = 1.0;
+                pe.style.display = 'block';
+
+                let xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        fade(pe);
+                        ptf.body.innerHTML += xmlhttp.responseText;
+
+                        cctimer = window.setTimeout(function() {
+                            fade(ptf.getElementById('clearcachepopup'), true);
+                        }, 1000);
+                    }
+                };
+                const url = document.getElementById('suaboClearCacheSettings').getAttribute('href') + "&fnc=ajaxClearCache";
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+                return false;
+            };
+
+        </script>
+    </li>
+{% endblock %}
